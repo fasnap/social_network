@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.db.models.signals import post_save
+
 # Create your models here.
 class AccountManager(BaseUserManager):
     def create_user(self,email,username,phone,password,fullname=None):
@@ -35,10 +37,10 @@ class AccountManager(BaseUserManager):
 
 
 class Account(AbstractBaseUser):
-    fullname = models.CharField(max_length=30,blank=True,null=True)
+    fullname = models.CharField(max_length=30,null=True,blank=True)
     username = models.CharField(max_length=30,unique=True)
-    phone = models.CharField(max_length=15,blank=True)
-    email = models.EmailField(max_length=100,blank=True)
+    phone = models.CharField(max_length=15,blank=True,null=True)
+    email = models.EmailField(max_length=100,blank=True,null=True)
 
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
@@ -61,3 +63,12 @@ class Account(AbstractBaseUser):
     
     def has_module_perms(self, add_label):
         return True
+
+class Profile(models.Model):
+    user=models.OneToOneField(Account,on_delete=models.CASCADE,related_name='profile')
+    date_of_birth=models.DateField(blank=True,null=True)
+    bio=models.TextField(max_length=500)
+    photo=models.ImageField(upload_to='profile_photos/',blank=True)
+    
+    def __unicode__(self):
+        return f'Profile for user {self.user.username}'

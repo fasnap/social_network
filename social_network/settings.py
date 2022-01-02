@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'post',
     'storages',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -83,7 +84,7 @@ AUTH_USER_MODEL = 'user_app.Account'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'social_network',
+        'NAME': 'social_network4',
         'USER':'myprojectuser',
         'PASSWORD':'password',
         'HOST':'localhost',
